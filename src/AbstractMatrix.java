@@ -1,10 +1,8 @@
-import java.util.Arrays;
-
 /**
  * Абстрактный класс представляющий сущность матрицы и дающий базовый функционал.
  */
 public abstract class AbstractMatrix {
-    protected double[][] content;
+    protected double[][] matrixArray;
     protected int rows;
     protected int cols;
     protected TransporeMatrix transpore;
@@ -18,7 +16,7 @@ public abstract class AbstractMatrix {
     {
         this.rows = matrixArray.length;
         this.cols = matrixArray[0].length;
-        this.content = matrixArray.clone();
+        this.matrixArray = matrixArray.clone();
         this.transpore = new TransporeMatrix(matrixArray);
     }
 
@@ -31,11 +29,11 @@ public abstract class AbstractMatrix {
     }
 
     public double[][] getMatrixArray() {
-        return content;
+        return matrixArray;
     }
 
     public double getElement(int rowPos, int colPos) {
-        return this.content[rowPos][colPos];
+        return this.matrixArray[rowPos][colPos];
     }
 
 }

@@ -26,19 +26,23 @@ public class MatrixCalculator {
                 System.out.println(addMatrices);
                 break;
             case 2:
+                Matrix sub = subMatricesProcess();
+                System.out.println("Subtraction result: ");
+                System.out.println(sub);
+            case 3:
                 Matrix multiplyMatrixByConst = multiplyMatrixByConstProcess();
                 System.out.println("The multipication by constant result is: ");
                 System.out.println(multiplyMatrixByConst);
                 break;
-            case 3:
+            case 4:
                 Matrix multMatrixByMatrix = multiplyMatrixByOtherMatrixProcess();
                 System.out.println("The multiplication matrix by matrix result is: ");
                 System.out.println(multMatrixByMatrix);
                 break;
-            case 4:
+            case 5:
                 transparentMenu();
                 break;
-            case 5:
+            case 6:
                 double det = detMatrixProcess();
                 System.out.print("Result: ");
                 System.out.println(det);
@@ -52,10 +56,11 @@ public class MatrixCalculator {
 
     private void showMenu() {
         System.out.println("1. Add matrices");
-        System.out.println("2. Multiply matrix by a constant");
-        System.out.println("3. Multiply matrices");
-        System.out.println("4. Transpose matrix");
-        System.out.println("5. Calculate a determinant");
+        System.out.println("2. Sub matrices");
+        System.out.println("3. Multiply matrix by a constant");
+        System.out.println("4. Multiply matrices");
+        System.out.println("5. Transpose matrix");
+        System.out.println("6. Calculate a determinant");
         System.out.println("0. Exit");
     }
 
@@ -98,6 +103,12 @@ public class MatrixCalculator {
         var firstMatrix = createMatrix();
         var secondMatrix = createMatrix();
         return firstMatrix.addMatrices(secondMatrix);
+    }
+
+    private Matrix subMatricesProcess() {
+        var firstMatrix = createMatrix();
+        var secondMatrix = createMatrix();
+        return firstMatrix.subMatrices(secondMatrix);
     }
 
     private Matrix multiplyMatrixByConstProcess() {

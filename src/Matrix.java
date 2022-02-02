@@ -16,20 +16,30 @@ public class Matrix extends AbstractMatrix {
      * @return результат вычисления
      */
     public Matrix addMatrices(Matrix secondMatrix) {
-        if (this.rows != secondMatrix.getRows() && this.cols != secondMatrix.getCols()) {
+        if (this.rows != secondMatrix.rows && this.cols != secondMatrix.cols) {
             throw new IllegalArgumentException("Размеры матриц не совпадают.");
         }
 
         var res = new double[rows][cols];
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                res[row][col] = this.content[row][col] + secondMatrix.getElement(row, col);
+                res[row][col] = this.matrixArray[row][col] + secondMatrix.matrixArray[row][col];
             }
         }
 
         return new Matrix(res);
     }
 
+    public Matrix subMatrices(Matrix secondMatrix) {
+        var res = new double[rows][cols];
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                res[row][col] = this.matrixArray[row][col] - secondMatrix.matrixArray[row][col];
+            }
+        }
+
+        return new Matrix(res);
+    }
     /**
      * Умножает матрицу на целочисленную константу.
      * @param constant целочисленная константа на которую надо умножить матрицу.
@@ -40,7 +50,7 @@ public class Matrix extends AbstractMatrix {
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                res[row][col] = this.content[row][col] * constant;
+                res[row][col] = this.matrixArray[row][col] * constant;
             }
         }
 
@@ -57,7 +67,7 @@ public class Matrix extends AbstractMatrix {
      * @return результат вычесления.
      */
     public Matrix multiplyMatrixByMatrix(Matrix otherMatrix) {
-        if (this.cols != otherMatrix.getRows()) {
+        if (this.cols != otherMatrix.rows) {
             throw new IllegalArgumentException("Количество столбцев первой матрицы не равны количеству строк второй");
         }
 
@@ -72,37 +82,37 @@ public class Matrix extends AbstractMatrix {
     }
 
     public double det() {
-        if (this.content.length == this.content[0].length)
+        if (this.matrixArray.length == this.matrixArray[0].length)
             return calcDet(this);
 
         return -1;
     }
 
     private double calcDet(Matrix matrix) {
-        if (matrix.content.length == 2)
-            return matrix.content[0][0] * matrix.content[1][1] - matrix.content[0][1] * matrix.content[1][0];
+        if (matrix.matrixArray.length == 2)
+            return matrix.matrixArray[0][0] * matrix.matrixArray[1][1] - matrix.matrixArray[0][1] * matrix.matrixArray[1][0];
 
         double det = 0;
-        for (int i = 0; i < matrix.content.length; i++) {
+        for (int i = 0; i < matrix.matrixArray.length; i++) {
             if (i % 2 == 0)
-                det += matrix.content[0][i] * calcDet(minor(matrix, i));
+                det += matrix.matrixArray[0][i] * calcDet(minor(matrix, i));
             else
-                det -= matrix.content[0][i] * calcDet(minor(matrix, i));
+                det -= matrix.matrixArray[0][i] * calcDet(minor(matrix, i));
         }
 
         return det;
     }
 
     private Matrix minor(Matrix matrix, int cols) {
-        double[][] tmp = new double[matrix.content.length - 1][matrix.content.length - 1];
+        double[][] tmp = new double[matrix.matrixArray.length - 1][matrix.matrixArray.length - 1];
 
         int itmp = 0;
         int jtmp = 0;
 
-        for (int row = 0; row < matrix.content.length; row++) {
-            for (int col = 0; col < matrix.content.length; col++) {
+        for (int row = 0; row < matrix.matrixArray.length; row++) {
+            for (int col = 0; col < matrix.matrixArray.length; col++) {
                 if (row != 0 && col != cols) {
-                    tmp[itmp][jtmp] = matrix.content[row][col];
+                    tmp[itmp][jtmp] = matrix.matrixArray[row][col];
                     jtmp++;
                 }
             }
@@ -125,7 +135,7 @@ public class Matrix extends AbstractMatrix {
     private double multiplyMatrixCell(Matrix secondMatrix, int row, int col) {
         double cell = 0;
         for (int j = 0; j < secondMatrix.getRows(); j++) {
-            cell += this.content[row][j] * secondMatrix.getElement(j, col);
+            cell += this.matrixArray[row][j] * secondMatrix.getElement(j, col);
         }
 
         return cell;
@@ -136,7 +146,7 @@ public class Matrix extends AbstractMatrix {
     @Override
     public String toString() {
         var sb = new StringBuilder();
-        for (var row : content) {
+        for (var row : matrixArray) {
             for (var cell : row) {
                 sb.append(String.format("%.2f", cell)).append(" ");
             }
